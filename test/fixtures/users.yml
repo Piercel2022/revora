@@ -1,0 +1,20 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+
+owner:
+  organization: acme
+  email: owner@acme-store.test
+  password_digest: <%= BCrypt::Password.create("password123") %>
+  first_name: Alice
+  last_name: Owner
+  role: owner
+  active: true
+
+member:
+  organization: acme
+  email: member@acme-store.test
+  password_digest: <%= BCrypt::Password.create("password123") %>
+  first_name: Bob
+  last_name: Member
+  role: member
+  active: true
