@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
-  slug: MyString
-  status: MyString
+acme:
+  name: Acme Store
+  slug: acme-store
+  status: active
 
-two:
-  name: MyString
-  slug: MyString
-  status: MyString
+another:
+  name: Another Store
+  slug: another-store
+  status: active
