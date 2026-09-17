@@ -3,7 +3,7 @@ class Store < ApplicationRecord
 
   has_many :customers, dependent: :destroy
   has_many :products, dependent: :destroy
-
+  has_many :orders, dependent: :destroy
   validates :name, presence: true
 
   validates :platform,
