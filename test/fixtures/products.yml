@@ -1,0 +1,22 @@
+acme_product:
+  store: acme_store
+  external_id: product-acme-001
+  title: Acme Product
+  description: First Acme product
+  sku: ACME-001
+  product_type: physical
+  status: active
+  price: 49.90
+  currency: EUR
+
+another_product:
+  store: another_store
+  external_id: product-another-001
+  title: Another Product
+  description: First Another product
+  sku: ANOTHER-001
+  product_type: physical
+  status: active
+  price: 79.90
+  currency: EUR
+  
