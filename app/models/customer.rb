@@ -1,6 +1,8 @@
 class Customer < ApplicationRecord
   belongs_to :store
 
+  has_many :orders, dependent: :destroy
+
   validates :status,
     inclusion: { in: %w[active inactive] },
     allow_blank: true
