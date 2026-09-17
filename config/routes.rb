@@ -8,6 +8,8 @@ Rails.application.routes.draw do
       get "auth/me", to: "auth#me"
 
       get "profile", to: "profile#show"
+
+      get "organizations/:id", to: "organizations#show"
     end
   end
 end

@@ -1,5 +1,9 @@
 class ApplicationController < ActionController::API
+  include Pundit::Authorization
+
   attr_reader :current_user
+
+  rescue_from Pundit::NotAuthorizedError, with: :render_forbidden
 
   private
 
@@ -7,7 +11,9 @@ class ApplicationController < ActionController::API
     token = bearer_token
 
     unless token
-      render json: { error: "Missing authorization token" }, status: :unauthorized
+      render json: {
+        error: "Missing authorization token"
+      }, status: :unauthorized
       return
     end
 
@@ -15,10 +21,14 @@ class ApplicationController < ActionController::API
     @current_user = User.find_by(id: payload[:sub])
 
     unless @current_user
-      render json: { error: "Invalid authorization token" }, status: :unauthorized
+      render json: {
+        error: "Invalid authorization token"
+      }, status: :unauthorized
     end
   rescue JwtService::Error, ActiveRecord::RecordNotFound
-    render json: { error: "Invalid authorization token" }, status: :unauthorized
+    render json: {
+      error: "Invalid authorization token"
+    }, status: :unauthorized
   end
 
   def current_organization
@@ -35,5 +45,11 @@ class ApplicationController < ActionController::API
     return if token.blank?
 
     token
+  end
+
+  def render_forbidden
+    render json: {
+      error: "Forbidden"
+    }, status: :forbidden
   end
 end
