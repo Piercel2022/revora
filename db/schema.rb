@@ -10,10 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_13_155327) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_13_202520) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
+
+  create_table "customers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "company_name"
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.string "external_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "phone"
+    t.string "status"
+    t.uuid "store_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["store_id"], name: "index_customers_on_store_id"
+  end
 
   create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -23,6 +37,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_155327) do
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_organizations_on_slug", unique: true
     t.index ["status"], name: "index_organizations_on_status"
+  end
+
+  create_table "stores", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "currency", default: "EUR", null: false
+    t.string "domain"
+    t.string "external_id", null: false
+    t.datetime "last_synced_at"
+    t.string "name", null: false
+    t.uuid "organization_id", null: false
+    t.string "platform", null: false
+    t.string "status", default: "active", null: false
+    t.string "timezone", default: "Europe/Paris", null: false
+    t.datetime "updated_at", null: false
+    t.index ["last_synced_at"], name: "index_stores_on_last_synced_at"
+    t.index ["organization_id", "external_id"], name: "index_stores_on_organization_id_and_external_id", unique: true
+    t.index ["organization_id"], name: "index_stores_on_organization_id"
+    t.index ["platform"], name: "index_stores_on_platform"
+    t.index ["status"], name: "index_stores_on_status"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -41,5 +74,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_155327) do
     t.index ["role"], name: "index_users_on_role"
   end
 
+  add_foreign_key "customers", "stores"
+  add_foreign_key "stores", "organizations"
   add_foreign_key "users", "organizations"
 end

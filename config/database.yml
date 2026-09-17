@@ -28,7 +28,7 @@ development:
   # To create additional roles in PostgreSQL see `$ createuser --help`.
   # When left blank, PostgreSQL will use the default role. This is
   # the same name as the operating system user running Rails.
-  username: postgres
+  username: revora_app
 
   # The password associated with the PostgreSQL role (username).
   password: <%= ENV.fetch("REVORA_DATABASE_PASSWORD") %>
@@ -57,7 +57,7 @@ development:
 test:
   <<: *default
   database: revora_api_test
-  username: postgres
+  username: revora_app
   password: <%= ENV.fetch("REVORA_DATABASE_PASSWORD") %>
   host: localhost
   port: 5433
@@ -92,7 +92,7 @@ production:
   primary: &primary_production
     <<: *default
     database: revora_api_production
-    username: revora_api
+    username: revora_app
     password: <%= ENV["REVORA_API_DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production

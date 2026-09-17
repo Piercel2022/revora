@@ -1,0 +1,19 @@
+acme_store:
+  organization: acme
+  name: Acme Store
+  platform: shopify
+  external_id: shopify-acme-001
+  domain: acme-store.myshopify.com
+  currency: EUR
+  timezone: Europe/Paris
+  status: active
+
+another_store:
+  organization: another
+  name: Another Store
+  platform: shopify
+  external_id: shopify-another-001
+  domain: another-store.myshopify.com
+  currency: EUR
+  timezone: Europe/Paris
+  status: active
