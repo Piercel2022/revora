@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       get "profile", to: "profile#show"
 
       get "organizations/:id", to: "organizations#show"
+      resources :stores
     end
   end
 end

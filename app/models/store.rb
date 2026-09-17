@@ -1,14 +1,7 @@
-
 class Store < ApplicationRecord
   belongs_to :organization
 
   has_many :customers, dependent: :destroy
-  has_many :products, dependent: :destroy
-  has_many :orders, dependent: :destroy
-  has_many :segments, dependent: :destroy
-  has_many :opportunities, dependent: :destroy
-  has_many :activities, dependent: :destroy
-  has_many :integrations, dependent: :destroy
 
   validates :name, presence: true
 
