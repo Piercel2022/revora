@@ -1,0 +1,19 @@
+acme_customer:
+  store: acme_store
+  external_id: customer-acme-001
+  first_name: Pierre
+  last_name: Customer
+  email: customer@acme.test
+  phone: "+33123456789"
+  company_name: Acme Customer
+  status: active
+
+another_customer:
+  store: another_store
+  external_id: customer-another-001
+  first_name: Another
+  last_name: Customer
+  email: customer@another.test
+  phone: "+33987654321"
+  company_name: Another Customer
+  status: active
