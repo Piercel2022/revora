@@ -1,0 +1,28 @@
+acme_order:
+  store: acme_store
+  customer: acme_customer
+  external_id: order-acme-001
+  order_number: ACME-1001
+  status: pending
+  currency: EUR
+  subtotal: 100.00
+  tax: 20.00
+  shipping: 10.00
+  discount: 5.00
+  total: 125.00
+  ordered_at: 2026-09-17 10:00:00
+
+another_order:
+  store: another_store
+  customer: another_customer
+  external_id: order-another-001
+  order_number: ANOTHER-1001
+  status: paid
+  currency: EUR
+  subtotal: 200.00
+  tax: 40.00
+  shipping: 15.00
+  discount: 10.00
+  total: 245.00
+  ordered_at: 2026-09-17 11:00:00
+  
