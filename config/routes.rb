@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       get "organizations/:id", to: "organizations#show"
       resources :stores
       resources :customers
+      resources :products
     end
   end
 end
