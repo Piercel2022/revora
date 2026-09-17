@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_13_202520) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_17_202044) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -37,6 +37,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_202520) do
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_organizations_on_slug", unique: true
     t.index ["status"], name: "index_organizations_on_status"
+  end
+
+  create_table "products", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "currency", default: "EUR", null: false
+    t.text "description"
+    t.string "external_id", null: false
+    t.decimal "price", precision: 12, scale: 2
+    t.string "product_type"
+    t.string "sku"
+    t.string "status", default: "active", null: false
+    t.uuid "store_id", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sku"], name: "index_products_on_sku"
+    t.index ["status"], name: "index_products_on_status"
+    t.index ["store_id", "external_id"], name: "index_products_on_store_id_and_external_id", unique: true
+    t.index ["store_id"], name: "index_products_on_store_id"
   end
 
   create_table "stores", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -75,6 +93,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_202520) do
   end
 
   add_foreign_key "customers", "stores"
+  add_foreign_key "products", "stores"
   add_foreign_key "stores", "organizations"
   add_foreign_key "users", "organizations"
 end
