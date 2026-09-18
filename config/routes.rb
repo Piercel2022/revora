@@ -17,6 +17,7 @@ Rails.application.routes.draw do
          resources :order_items
       end
       resources :segments
+      resources :opportunities
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_18_184344) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_18_194904) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -27,6 +27,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_184344) do
     t.uuid "store_id", null: false
     t.datetime "updated_at", null: false
     t.index ["store_id"], name: "index_customers_on_store_id"
+  end
+
+  create_table "opportunities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.uuid "customer_id"
+    t.datetime "expected_close_at"
+    t.string "name", null: false
+    t.uuid "organization_id", null: false
+    t.string "status", default: "open", null: false
+    t.uuid "store_id"
+    t.datetime "updated_at", null: false
+    t.decimal "value", precision: 12, scale: 2, default: "0.0", null: false
+    t.index ["customer_id"], name: "index_opportunities_on_customer_id"
+    t.index ["expected_close_at"], name: "index_opportunities_on_expected_close_at"
+    t.index ["organization_id", "name"], name: "index_opportunities_on_organization_id_and_name", unique: true
+    t.index ["organization_id"], name: "index_opportunities_on_organization_id"
+    t.index ["status"], name: "index_opportunities_on_status"
+    t.index ["store_id"], name: "index_opportunities_on_store_id"
   end
 
   create_table "order_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -148,6 +166,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_184344) do
   end
 
   add_foreign_key "customers", "stores"
+  add_foreign_key "opportunities", "customers"
+  add_foreign_key "opportunities", "organizations"
+  add_foreign_key "opportunities", "stores"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "customers"

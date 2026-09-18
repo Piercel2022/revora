@@ -2,6 +2,7 @@ class Customer < ApplicationRecord
   belongs_to :store
 
   has_many :orders, dependent: :destroy
+  has_many :opportunities, dependent: :destroy
 
   validates :status,
     inclusion: { in: %w[active inactive] },

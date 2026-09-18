@@ -1,0 +1,17 @@
+acme_opportunity:
+  organization: acme
+  store: acme_store
+  customer: acme_customer
+  name: Acme VIP Expansion
+  status: open
+  value: 15000.00
+  expected_close_at: 2026-10-15 10:00:00
+
+another_opportunity:
+  organization: another
+  store: another_store
+  customer: another_customer
+  name: Another Store Expansion
+  status: won
+  value: 8500.00
+  expected_close_at: 2026-11-20 10:00:00
