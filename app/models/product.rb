@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
   belongs_to :store
+  has_many :order_items, dependent: :restrict_with_exception
 
   validates :external_id,
     presence: true,
