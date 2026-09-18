@@ -1,0 +1,11 @@
+acme_segment:
+  organization: acme
+  name: VIP Customers
+  description: High-value Acme customers
+  status: active
+
+another_segment:
+  organization: another
+  name: Repeat Customers
+  description: Repeat customers from Another organization
+  status: active

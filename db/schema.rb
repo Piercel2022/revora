@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_17_224424) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_18_184344) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -100,6 +100,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_224424) do
     t.index ["store_id"], name: "index_products_on_store_id"
   end
 
+  create_table "segments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "name", null: false
+    t.uuid "organization_id", null: false
+    t.string "status", default: "active", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id", "name"], name: "index_segments_on_organization_id_and_name", unique: true
+    t.index ["organization_id"], name: "index_segments_on_organization_id"
+    t.index ["status"], name: "index_segments_on_status"
+  end
+
   create_table "stores", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "currency", default: "EUR", null: false
@@ -141,6 +153,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_224424) do
   add_foreign_key "orders", "customers"
   add_foreign_key "orders", "stores"
   add_foreign_key "products", "stores"
+  add_foreign_key "segments", "organizations"
   add_foreign_key "stores", "organizations"
   add_foreign_key "users", "organizations"
 end

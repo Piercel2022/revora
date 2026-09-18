@@ -1,6 +1,7 @@
 class Organization < ApplicationRecord
   has_many :users, dependent: :destroy
   has_many :stores, dependent: :destroy
+  has_many :segments, dependent: :destroy
 
   validates :name, presence: true
 

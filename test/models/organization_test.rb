@@ -115,4 +115,16 @@ class OrganizationTest < ActiveSupport::TestCase
   test "has many stores" do
     assert_respond_to Organization.new, :stores
   end
+
+  test "has many segments" do
+    organization = organizations(:acme)
+
+    segment = Segment.create!(
+      organization: organization,
+      name: "Test Segment",
+      status: "active"
+    )
+
+    assert_includes organization.segments, segment
+  end
 end
