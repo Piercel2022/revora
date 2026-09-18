@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_17_212928) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_17_224424) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -27,6 +27,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_212928) do
     t.uuid "store_id", null: false
     t.datetime "updated_at", null: false
     t.index ["store_id"], name: "index_customers_on_store_id"
+  end
+
+  create_table "order_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "currency", default: "EUR", null: false
+    t.decimal "discount", precision: 12, scale: 2, default: "0.0", null: false
+    t.string "external_id"
+    t.uuid "order_id", null: false
+    t.uuid "product_id", null: false
+    t.integer "quantity", default: 1, null: false
+    t.string "sku"
+    t.decimal "tax", precision: 12, scale: 2, default: "0.0", null: false
+    t.string "title", null: false
+    t.decimal "total", precision: 12, scale: 2, default: "0.0", null: false
+    t.decimal "unit_price", precision: 12, scale: 2, default: "0.0", null: false
+    t.datetime "updated_at", null: false
+    t.index ["external_id"], name: "index_order_items_on_external_id"
+    t.index ["order_id", "external_id"], name: "index_order_items_on_order_id_and_external_id", unique: true
+    t.index ["order_id"], name: "index_order_items_on_order_id"
+    t.index ["product_id"], name: "index_order_items_on_product_id"
   end
 
   create_table "orders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -116,6 +136,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_212928) do
   end
 
   add_foreign_key "customers", "stores"
+  add_foreign_key "order_items", "orders"
+  add_foreign_key "order_items", "products"
   add_foreign_key "orders", "customers"
   add_foreign_key "orders", "stores"
   add_foreign_key "products", "stores"
