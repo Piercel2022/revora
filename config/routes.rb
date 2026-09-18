@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       end
       resources :segments
       resources :opportunities
+      resources :integrations
     end
   end
 end
