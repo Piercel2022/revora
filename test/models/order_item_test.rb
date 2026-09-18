@@ -164,4 +164,26 @@ class OrderItemTest < ActiveSupport::TestCase
     assert_not order_item.valid?
     assert_includes order_item.errors[:product], "must belong to the same store"
   end
+
+  test "destroying an order destroys its order items" do
+    order = orders(:acme_order)
+    order_item = order_items(:acme_order_item)
+
+    assert_difference("OrderItem.count", -1) do
+      order.destroy
+    end
+
+    assert_not OrderItem.exists?(order_item.id)
+  end
+
+  test "destroying a product with order items raises an exception" do
+    product = products(:acme_product)
+
+    assert_raises(ActiveRecord::DeleteRestrictionError) do
+      product.destroy
+    end
+
+    assert Product.exists?(product.id)
+    assert OrderItem.exists?(order_items(:acme_order_item).id)
+  end
 end
