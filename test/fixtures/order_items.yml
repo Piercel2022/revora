@@ -1,0 +1,25 @@
+acme_order_item:
+  order: acme_order
+  product: acme_product
+  external_id: line-acme-001
+  title: Acme Product
+  sku: ACME-001
+  quantity: 2
+  unit_price: 50.00
+  discount: 5.00
+  tax: 19.00
+  total: 114.00
+  currency: EUR
+
+another_order_item:
+  order: another_order
+  product: another_product
+  external_id: line-another-001
+  title: Another Product
+  sku: ANOTHER-001
+  quantity: 1
+  unit_price: 200.00
+  discount: 10.00
+  tax: 38.00
+  total: 228.00
+  currency: EUR
