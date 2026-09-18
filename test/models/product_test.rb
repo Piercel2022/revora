@@ -148,4 +148,15 @@ class ProductTest < ActiveSupport::TestCase
 
     assert product.valid?
   end
+
+  test "cannot be destroyed when order items exist" do
+    product = products(:acme_product)
+
+    assert_raises(ActiveRecord::DeleteRestrictionError) do
+      product.destroy
+    end
+
+    assert Product.exists?(product.id)
+    assert OrderItem.exists?(order_items(:acme_order_item).id)
+  end
 end

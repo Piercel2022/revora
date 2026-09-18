@@ -306,4 +306,49 @@ class Api::V1::ProductsControllerTest < ActionDispatch::IntegrationTest
 
     assert body["errors"].any?
   end
+
+  test "returns not found when showing a non-existent product" do
+    get "/api/v1/products/#{SecureRandom.uuid}",
+      headers: {
+        "Authorization" => "Bearer #{@owner_token}"
+      }
+
+    assert_response :not_found
+
+    body = JSON.parse(response.body)
+
+    assert_equal "Not Found", body["error"]
+  end
+
+  test "returns not found when updating a non-existent product" do
+    patch "/api/v1/products/#{SecureRandom.uuid}",
+      params: {
+        product: {
+          title: "Updated Product"
+        }
+      },
+      headers: {
+        "Authorization" => "Bearer #{@owner_token}"
+      }
+
+    assert_response :not_found
+
+    body = JSON.parse(response.body)
+
+    assert_equal "Not Found", body["error"]
+  end
+
+  test "returns not found when destroying a non-existent product" do
+    delete "/api/v1/products/#{SecureRandom.uuid}",
+      headers: {
+        "Authorization" => "Bearer #{@owner_token}"
+      }
+
+    assert_response :not_found
+
+    body = JSON.parse(response.body)
+
+    assert_equal "Not Found", body["error"]
+  end
+
 end
