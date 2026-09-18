@@ -13,7 +13,9 @@ Rails.application.routes.draw do
       resources :stores
       resources :customers
       resources :products
-      resources :orders
+      resources :orders do
+         resources :order_items
+      end
     end
   end
 end

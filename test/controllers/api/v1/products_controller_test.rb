@@ -235,15 +235,21 @@ class Api::V1::ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Attempted Move", @acme_product.title
   end
 
-  test "owner can destroy a product from their organization" do
-    assert_difference("Product.count", -1) do
+  test "owner cannot destroy a product with order items" do
+    assert_no_difference("Product.count") do
       delete "/api/v1/products/#{@acme_product.id}",
         headers: {
           "Authorization" => "Bearer #{@owner_token}"
         }
     end
 
-    assert_response :no_content
+    assert_response :conflict
+
+    body = JSON.parse(response.body)
+
+    assert_equal "Cannot delete record because of dependent order_items", body["error"]
+    assert Product.exists?(@acme_product.id)
+    assert OrderItem.exists?(order_items(:acme_order_item).id)
   end
 
   test "member cannot destroy a product" do
@@ -282,10 +288,11 @@ class Api::V1::ProductsControllerTest < ActionDispatch::IntegrationTest
         params: {
           product: {
             store_id: @acme_store.id,
-            external_id: "",
-            title: "",
-            status: "active",
-            currency: "EUR"
+            external_id: nil,
+            title: nil,
+            status: "invalid",
+            price: -10,
+            currency: nil
           }
         },
         headers: {
@@ -297,6 +304,6 @@ class Api::V1::ProductsControllerTest < ActionDispatch::IntegrationTest
 
     body = JSON.parse(response.body)
 
-    assert body["errors"].present?
+    assert body["errors"].any?
   end
 end

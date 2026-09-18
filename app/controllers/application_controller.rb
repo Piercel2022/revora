@@ -4,6 +4,7 @@ class ApplicationController < ActionController::API
   attr_reader :current_user
 
   rescue_from Pundit::NotAuthorizedError, with: :render_forbidden
+  rescue_from ActiveRecord::DeleteRestrictionError, with: :render_conflict
 
   private
 
@@ -51,5 +52,11 @@ class ApplicationController < ActionController::API
     render json: {
       error: "Forbidden"
     }, status: :forbidden
+  end
+
+  def render_conflict(exception)
+    render json: {
+      error: exception.message
+    }, status: :conflict
   end
 end
