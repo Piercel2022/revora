@@ -3,6 +3,7 @@ class Organization < ApplicationRecord
   has_many :stores, dependent: :destroy
   has_many :segments, dependent: :destroy
   has_many :opportunities, dependent: :destroy
+  has_many :integrations, dependent: :destroy
 
   validates :name, presence: true
 

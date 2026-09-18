@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_18_194904) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_18_205023) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -27,6 +27,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_194904) do
     t.uuid "store_id", null: false
     t.datetime "updated_at", null: false
     t.index ["store_id"], name: "index_customers_on_store_id"
+  end
+
+  create_table "integrations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.jsonb "credentials"
+    t.string "external_id"
+    t.string "kind", null: false
+    t.string "name", null: false
+    t.uuid "organization_id", null: false
+    t.string "provider", null: false
+    t.string "status", default: "inactive", null: false
+    t.uuid "store_id"
+    t.datetime "updated_at", null: false
+    t.index ["external_id"], name: "index_integrations_on_external_id"
+    t.index ["kind"], name: "index_integrations_on_kind"
+    t.index ["organization_id", "name"], name: "index_integrations_on_organization_id_and_name", unique: true
+    t.index ["organization_id"], name: "index_integrations_on_organization_id"
+    t.index ["provider"], name: "index_integrations_on_provider"
+    t.index ["status"], name: "index_integrations_on_status"
+    t.index ["store_id"], name: "index_integrations_on_store_id"
   end
 
   create_table "opportunities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -166,6 +186,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_194904) do
   end
 
   add_foreign_key "customers", "stores"
+  add_foreign_key "integrations", "organizations"
+  add_foreign_key "integrations", "stores"
   add_foreign_key "opportunities", "customers"
   add_foreign_key "opportunities", "organizations"
   add_foreign_key "opportunities", "stores"

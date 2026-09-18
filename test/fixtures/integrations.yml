@@ -1,0 +1,23 @@
+acme_shopify:
+  organization: acme
+  store: acme_store
+  provider: shopify
+  kind: store
+  name: Acme Shopify
+  status: active
+  external_id: shopify-acme-001
+  credentials:
+    access_token: acme-secret-token
+    shop_domain: acme.example.com
+
+another_shopify:
+  organization: another
+  store: another_store
+  provider: shopify
+  kind: store
+  name: Another Shopify
+  status: active
+  external_id: shopify-another-001
+  credentials:
+    access_token: another-secret-token
+    shop_domain: another.example.com
