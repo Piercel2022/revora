@@ -290,6 +290,7 @@ class Api::V1::OrdersControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :no_content
+    assert_empty response.body
     assert_not Order.exists?(order_id)
   end
 

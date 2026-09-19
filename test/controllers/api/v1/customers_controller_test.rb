@@ -246,6 +246,7 @@ class Api::V1::CustomersControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :no_content
+    assert_empty response.body
   end
 
   test "member cannot destroy a customer" do

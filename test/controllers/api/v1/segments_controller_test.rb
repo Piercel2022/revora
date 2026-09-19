@@ -255,6 +255,7 @@ class Api::V1::SegmentsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :no_content
+    assert_empty response.body
     refute Segment.exists?(@acme_segment.id)
   end
 

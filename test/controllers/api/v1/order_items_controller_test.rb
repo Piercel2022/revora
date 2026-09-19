@@ -311,6 +311,7 @@ class Api::V1::OrderItemsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :no_content
+    assert_empty response.body
   end
 
   test "member cannot destroy an order item" do

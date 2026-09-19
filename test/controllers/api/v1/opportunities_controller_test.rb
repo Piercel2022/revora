@@ -277,6 +277,7 @@ class Api::V1::OpportunitiesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :no_content
+    assert_empty response.body
     refute Opportunity.exists?(@acme_opportunity.id)
   end
 

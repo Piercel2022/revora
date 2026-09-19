@@ -347,6 +347,7 @@ class Api::V1::IntegrationsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :no_content
+    assert_empty response.body
     refute Integration.exists?(@acme_integration.id)
   end
 

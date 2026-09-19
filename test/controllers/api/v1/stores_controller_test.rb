@@ -197,6 +197,7 @@ class Api::V1::StoresControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :no_content
+    assert_empty response.body
   end
 
   test "member cannot destroy a store" do
