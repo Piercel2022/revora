@@ -28,9 +28,7 @@ module Api
         if order_item.save
           render json: order_item, status: :created
         else
-          render json: {
-            errors: order_item.errors.full_messages
-          }, status: :unprocessable_entity
+          render_validation_errors(order_item)
         end
       end
 
@@ -40,9 +38,7 @@ module Api
         if @order_item.update(order_item_params)
           render json: @order_item
         else
-          render json: {
-            errors: @order_item.errors.full_messages
-          }, status: :unprocessable_entity
+          render_validation_errors(@order_item)
         end
       end
 

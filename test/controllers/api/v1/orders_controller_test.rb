@@ -244,6 +244,9 @@ class Api::V1::OrdersControllerTest < ActionDispatch::IntegrationTest
 
     response_body = JSON.parse(response.body)
 
+    assert_equal "Validation failed", response_body["error"]
+    assert_kind_of Array, response_body["errors"]
+    assert response_body["errors"].present?
     assert_includes response_body["errors"], "External can't be blank"
   end
 
@@ -252,9 +255,7 @@ class Api::V1::OrdersControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference("Order.count", -1) do
       delete api_v1_order_url(@order),
-        headers: {
-          "Authorization" => "Bearer #{@owner_token}"
-        }
+        headers: { "Authorization" => "Bearer #{@owner_token}" }
     end
 
     assert_response :no_content
@@ -264,9 +265,7 @@ class Api::V1::OrdersControllerTest < ActionDispatch::IntegrationTest
   test "member cannot destroy an order" do
     assert_no_difference("Order.count") do
       delete api_v1_order_url(@order),
-        headers: {
-          "Authorization" => "Bearer #{@member_token}"
-        }
+        headers: { "Authorization" => "Bearer #{@member_token}" }
     end
 
     assert_response :forbidden
@@ -275,9 +274,7 @@ class Api::V1::OrdersControllerTest < ActionDispatch::IntegrationTest
   test "destroy denies order from another organization" do
     assert_no_difference("Order.count") do
       delete api_v1_order_url(@another_order),
-        headers: {
-          "Authorization" => "Bearer #{@owner_token}"
-        }
+        headers: { "Authorization" => "Bearer #{@owner_token}" }
     end
 
     assert_response :forbidden

@@ -24,9 +24,7 @@ module Api
         if store.save
           render json: store, status: :created
         else
-          render json: {
-            errors: store.errors.full_messages
-          }, status: :unprocessable_entity
+          render_validation_errors(store)
         end
       end
 
@@ -36,9 +34,7 @@ module Api
         if @store.update(store_params)
           render json: @store
         else
-          render json: {
-            errors: @store.errors.full_messages
-          }, status: :unprocessable_entity
+          render_validation_errors(@store)
         end
       end
 

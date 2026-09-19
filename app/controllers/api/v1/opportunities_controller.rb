@@ -28,9 +28,7 @@ module Api
         if opportunity.save
           render json: opportunity, status: :created
         else
-          render json: {
-            errors: opportunity.errors.full_messages
-          }, status: :unprocessable_entity
+          render_validation_errors(opportunity)
         end
       end
 
@@ -42,9 +40,7 @@ module Api
         )
           render json: @opportunity
         else
-          render json: {
-            errors: @opportunity.errors.full_messages
-          }, status: :unprocessable_entity
+          render_validation_errors(@opportunity)
         end
       end
 

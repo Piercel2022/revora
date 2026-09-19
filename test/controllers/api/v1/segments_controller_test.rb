@@ -287,7 +287,9 @@ class Api::V1::SegmentsControllerTest < ActionDispatch::IntegrationTest
 
     body = JSON.parse(response.body)
 
-    assert body["errors"].any?
+    assert_equal "Validation failed", body["error"]
+    assert_kind_of Array, body["errors"]
+    assert body["errors"].present?
   end
 
   test "returns not found when showing a non-existent segment" do

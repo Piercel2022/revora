@@ -18,29 +18,28 @@ module Api
 
       def create
         store = Store.find(customer_params[:store_id])
-
-        customer = store.customers.new(customer_params.except(:store_id))
+        customer = store.customers.new(
+          customer_params.except(:store_id)
+        )
 
         authorize customer
 
         if customer.save
           render json: customer, status: :created
         else
-          render json: {
-            errors: customer.errors.full_messages
-          }, status: :unprocessable_entity
+          render_validation_errors(customer)
         end
       end
 
       def update
         authorize @customer
 
-        if @customer.update(customer_params.except(:store_id))
+        if @customer.update(
+          customer_params.except(:store_id)
+        )
           render json: @customer
         else
-          render json: {
-            errors: @customer.errors.full_messages
-          }, status: :unprocessable_entity
+          render_validation_errors(@customer)
         end
       end
 
@@ -66,7 +65,6 @@ module Api
           :last_name,
           :email,
           :phone,
-          :company_name,
           :status
         )
       end

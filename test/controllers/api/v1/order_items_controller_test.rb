@@ -408,7 +408,8 @@ class Api::V1::OrderItemsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
 
     body = JSON.parse(response.body)
-
-    assert body["errors"].any?
+    assert_equal "Validation failed", body["error"]
+    assert_kind_of Array, body["errors"]
+    assert body["errors"].present?
   end
 end

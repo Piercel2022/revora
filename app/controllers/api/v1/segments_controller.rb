@@ -18,28 +18,28 @@ module Api
 
       def create
         organization = Organization.find(segment_params[:organization_id])
-        segment = organization.segments.new(segment_params.except(:organization_id))
+        segment = organization.segments.new(
+          segment_params.except(:organization_id)
+        )
 
         authorize segment
 
         if segment.save
           render json: segment, status: :created
         else
-          render json: {
-            errors: segment.errors.full_messages
-          }, status: :unprocessable_entity
+          render_validation_errors(segment)
         end
       end
 
       def update
         authorize @segment
 
-        if @segment.update(segment_params.except(:organization_id))
+        if @segment.update(
+          segment_params.except(:organization_id)
+        )
           render json: @segment
         else
-          render json: {
-            errors: @segment.errors.full_messages
-          }, status: :unprocessable_entity
+          render_validation_errors(@segment)
         end
       end
 

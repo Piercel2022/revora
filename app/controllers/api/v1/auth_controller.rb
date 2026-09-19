@@ -20,11 +20,8 @@ module Api
           user: user_json(user),
           organization: organization_json(organization)
         }, status: :created
-      rescue ActiveRecord::RecordInvalid => e
-        render json: {
-          error: "Validation failed",
-          errors: e.record.errors.to_hash
-        }, status: :unprocessable_entity
+        rescue ActiveRecord::RecordInvalid => e
+         render_validation_errors(e.record)
       end
 
       def login

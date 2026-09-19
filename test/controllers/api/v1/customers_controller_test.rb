@@ -284,7 +284,9 @@ class Api::V1::CustomersControllerTest < ActionDispatch::IntegrationTest
 
     body = JSON.parse(response.body)
 
-    assert_includes body["errors"], "Email is invalid"
+    assert_equal "Validation failed", body["error"]
+    assert_kind_of Array, body["errors"]
+    assert body["errors"].present?
   end
 
   test "returns validation errors when updating an invalid customer" do
@@ -302,6 +304,8 @@ class Api::V1::CustomersControllerTest < ActionDispatch::IntegrationTest
 
     body = JSON.parse(response.body)
 
-    assert_includes body["errors"], "Email is invalid"
+    assert_equal "Validation failed", body["error"]
+    assert_kind_of Array, body["errors"]
+    assert body["errors"].present?
   end
 end

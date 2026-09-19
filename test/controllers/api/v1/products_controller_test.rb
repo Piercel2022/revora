@@ -304,7 +304,9 @@ class Api::V1::ProductsControllerTest < ActionDispatch::IntegrationTest
 
     body = JSON.parse(response.body)
 
-    assert body["errors"].any?
+    assert_equal "Validation failed", body["error"]
+    assert_kind_of Array, body["errors"]
+    assert body["errors"].present?
   end
 
   test "returns not found when showing a non-existent product" do
@@ -350,5 +352,4 @@ class Api::V1::ProductsControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal "Not Found", body["error"]
   end
-
 end

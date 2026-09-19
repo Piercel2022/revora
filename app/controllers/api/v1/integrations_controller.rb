@@ -28,9 +28,7 @@ module Api
         if integration.save
           render json: integration_payload(integration), status: :created
         else
-          render json: {
-            errors: integration.errors.full_messages
-          }, status: :unprocessable_entity
+          render_validation_errors(integration)
         end
       end
 
@@ -42,9 +40,7 @@ module Api
         )
           render json: integration_payload(@integration)
         else
-          render json: {
-            errors: @integration.errors.full_messages
-          }, status: :unprocessable_entity
+          render_validation_errors(@integration)
         end
       end
 

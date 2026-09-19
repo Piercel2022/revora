@@ -49,6 +49,13 @@ class ApplicationController < ActionController::API
     token
   end
 
+  def render_validation_errors(record)
+    render json: {
+      error: "Validation failed",
+      errors: record.errors.full_messages
+    }, status: :unprocessable_entity
+  end
+
   def render_forbidden
     render json: {
       error: "Forbidden"

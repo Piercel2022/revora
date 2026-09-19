@@ -74,7 +74,9 @@ class Api::V1::AuthControllerTest < ActionDispatch::IntegrationTest
     body = JSON.parse(response.body)
 
     assert_equal "Validation failed", body["error"]
+    assert_kind_of Array, body["errors"]
     assert body["errors"].present?
+    assert_includes body["errors"], "Name can't be blank"
   end
 
   test "logs in with valid credentials" do
