@@ -55,6 +55,17 @@ class Api::V1::OrdersControllerTest < ActionDispatch::IntegrationTest
     assert_equal @order.id, response_order["id"]
   end
 
+  test "show returns not found for a missing order" do
+    get api_v1_order_url("00000000-0000-0000-0000-000000000000"),
+      headers: { "Authorization" => "Bearer #{@owner_token}" }
+
+    assert_response :not_found
+
+    response_body = JSON.parse(response.body)
+
+    assert_equal "Not Found", response_body["error"]
+  end
+
   test "show denies order from another organization" do
     get api_v1_order_url(@another_order),
       headers: { "Authorization" => "Bearer #{@owner_token}" }
@@ -248,6 +259,26 @@ class Api::V1::OrdersControllerTest < ActionDispatch::IntegrationTest
     assert_kind_of Array, response_body["errors"]
     assert response_body["errors"].present?
     assert_includes response_body["errors"], "External can't be blank"
+  end
+
+  test "update returns validation errors" do
+    patch api_v1_order_url(@order),
+      params: {
+        order: {
+          status: "invalid"
+        }
+      },
+      headers: {
+        "Authorization" => "Bearer #{@owner_token}"
+      }
+
+    assert_response :unprocessable_entity
+
+    response_body = JSON.parse(response.body)
+
+    assert_equal "Validation failed", response_body["error"]
+    assert_kind_of Array, response_body["errors"]
+    assert response_body["errors"].present?
   end
 
   test "owner can destroy an order" do

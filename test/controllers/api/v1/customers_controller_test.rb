@@ -41,6 +41,18 @@ class Api::V1::CustomersControllerTest < ActionDispatch::IntegrationTest
     assert_equal @acme_customer.email, body["email"]
   end
 
+  test "returns not found for a missing customer" do
+    get "/api/v1/customers/00000000-0000-0000-0000-000000000000", headers: {
+      "Authorization" => "Bearer #{@owner_token}"
+    }
+
+    assert_response :not_found
+
+    body = JSON.parse(response.body)
+
+    assert_equal "Not Found", body["error"]
+  end
+
   test "forbids access to a customer from another organization" do
     get "/api/v1/customers/#{@another_customer.id}", headers: {
       "Authorization" => "Bearer #{@owner_token}"

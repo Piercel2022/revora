@@ -231,6 +231,30 @@ class Api::V1::IntegrationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "inactive", @acme_integration.status
   end
 
+  test "update returns validation errors" do
+    patch "/api/v1/integrations/#{@acme_integration.id}",
+      params: {
+        integration: {
+          name: ""
+        }
+      },
+      headers: {
+        "Authorization" => "Bearer #{@owner_token}"
+      }
+
+    assert_response :unprocessable_entity
+
+    body = JSON.parse(response.body)
+
+    assert_equal "Validation failed", body["error"]
+    assert_kind_of Array, body["errors"]
+    assert body["errors"].present?
+
+    @acme_integration.reload
+
+    assert_equal "Acme Shopify", @acme_integration.name
+  end
+
   test "member cannot update an integration" do
     patch "/api/v1/integrations/#{@acme_integration.id}",
       params: {

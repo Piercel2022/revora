@@ -190,6 +190,26 @@ class Api::V1::OpportunitiesControllerTest < ActionDispatch::IntegrationTest
     assert_equal 18_000.to_d, @acme_opportunity.value
   end
 
+  test "update returns validation errors" do
+    patch "/api/v1/opportunities/#{@acme_opportunity.id}",
+      params: {
+        opportunity: {
+          name: ""
+        }
+      },
+      headers: {
+        "Authorization" => "Bearer #{@owner_token}"
+      }
+
+    assert_response :unprocessable_entity
+
+    body = JSON.parse(response.body)
+
+    assert_equal "Validation failed", body["error"]
+    assert_kind_of Array, body["errors"]
+    assert body["errors"].present?
+  end
+
   test "member cannot update an opportunity" do
     patch "/api/v1/opportunities/#{@acme_opportunity.id}",
       params: {

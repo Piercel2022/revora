@@ -186,6 +186,26 @@ class Api::V1::SegmentsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "Updated description", @acme_segment.description
   end
 
+  test "update returns validation errors" do
+    patch "/api/v1/segments/#{@acme_segment.id}",
+      params: {
+        segment: {
+          name: ""
+        }
+      },
+      headers: {
+        "Authorization" => "Bearer #{@owner_token}"
+      }
+
+    assert_response :unprocessable_entity
+
+    body = JSON.parse(response.body)
+
+    assert_equal "Validation failed", body["error"]
+    assert_kind_of Array, body["errors"]
+    assert body["errors"].present?
+  end
+
   test "member cannot update a segment" do
     patch "/api/v1/segments/#{@acme_segment.id}",
       params: {

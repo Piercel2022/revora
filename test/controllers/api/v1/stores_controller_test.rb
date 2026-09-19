@@ -39,6 +39,18 @@ class Api::V1::StoresControllerTest < ActionDispatch::IntegrationTest
     assert_equal @acme_store.name, body["name"]
   end
 
+  test "returns not found for a missing store" do
+    get "/api/v1/stores/00000000-0000-0000-0000-000000000000", headers: {
+      "Authorization" => "Bearer #{@owner_token}"
+    }
+
+    assert_response :not_found
+
+    body = JSON.parse(response.body)
+
+    assert_equal "Not Found", body["error"]
+  end
+
   test "forbids access to a store from another organization" do
     get "/api/v1/stores/#{@another_store.id}", headers: {
       "Authorization" => "Bearer #{@owner_token}"
