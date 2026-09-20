@@ -6,9 +6,8 @@ Rails.application.routes.draw do
       post "auth/register", to: "auth#register"
       post "auth/login", to: "auth#login"
       get "auth/me", to: "auth#me"
-
+      get "dashboard", to: "dashboard#show"
       get "profile", to: "profile#show"
-
       get "organizations/:id", to: "organizations#show"
       resources :stores
       resources :customers
