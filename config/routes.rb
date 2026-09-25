@@ -8,6 +8,9 @@ Rails.application.routes.draw do
       get "auth/me", to: "auth#me"
       get "dashboard", to: "dashboard#show"
       get "profile", to: "profile#show"
+      patch "profile", to: "profile#update"
+      patch "profile/avatar", to: "profile#update_avatar"
+      delete "profile/avatar", to: "profile#destroy_avatar"
       get "organizations/:id", to: "organizations#show"
       resources :stores
       resources :customers
